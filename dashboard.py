@@ -93,3 +93,17 @@ with st.expander("Drop details (≥10 %) "):
 
 st.markdown("\u200b")
 st.caption("CTR = clicks / impressions. Previous-day CTR shown alongside today's CTR for flagged drops.")
+
+st.subheader("Daily Metrics by Partner")
+metrics = (
+    daily[["partner_id", "date", "clicks", "imps", "ctr"]]
+    .rename(columns={"imps": "impressions"})
+    .assign(
+        ctr=lambda d: d["ctr"].round(4)
+    )
+    .sort_values(["partner_id", "date"])  
+)
+st.dataframe(metrics.reset_index(drop=True), hide_index=True)
+
+st.markdown("\u200b")
+st.caption("Table: daily clicks, impressions, and CTR per partner.")
